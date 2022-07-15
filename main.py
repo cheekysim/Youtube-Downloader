@@ -17,16 +17,16 @@ link = str(input("Video Link: "))
 yt = YouTube(link, on_progress_callback=on_progress)
 ytname=yt.title
 streams = str(yt.streams)
-with open("temp", "w") as f:
+with open("streams.tmp", "w") as f:
     f.write(str(streams).replace(', ',',\n').replace('[', '\n').replace(']', '\n'))
     f.close()
 streams = []
-[streams.append(line) for line in open('temp') if 'Stream' in line]
+[streams.append(line) for line in open('streams.tmp') if 'Stream' in line]
 print("\n".join(streams))
 itag = input("Enter itag number of stream to download: ")
 stream = yt.streams.get_by_itag(itag)
 prog = []
-[prog.append(line) for line in open('temp') if str(itag) in line]
+[prog.append(line) for line in open('streams.tmp') if str(itag) in line]
 prog = ''.join(prog).split(' ')
 acodec = [i for i, s in enumerate(prog) if 'acodec' in s]
 vcodec = [i for i, s in enumerate(prog) if 'vcodec' in s]
@@ -40,10 +40,8 @@ if vcodec:
         if aitag != "":
             audio = yt.streams.get_by_itag(aitag)
             print("Downloading Audio")
-            os.mkdir("temp/audio")
             audio.download(output_path="temp/audio")
             print("\nDownloading Video")
-            os.mkdir("temp/video")
             stream.download(output_path="temp/video")
             print("\nMerging Audio and Video\n(This may take a while)")
             for file in os.listdir("temp/video"):
@@ -68,7 +66,7 @@ if vcodec:
 elif acodec:
     print("\nDownloading Audio")
     stream.download(output_path="Downloads")
-os.remove('temp')
+os.remove('streams.tmp')
 try:
     shutil.rmtree('temp')
 except:
