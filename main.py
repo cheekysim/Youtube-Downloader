@@ -4,7 +4,6 @@ import shutil
 import ffmpeg
 import os
 import sys
-import inspect
 
 def show_exception_and_exit(exc_type, exc_value, tb):
     import traceback
@@ -18,16 +17,16 @@ link = str(input("Video Link: "))
 yt = YouTube(link, on_progress_callback=on_progress)
 ytname=yt.title
 streams = str(yt.streams)
-with open("temp.txt", "w") as f:
+with open("temp", "w") as f:
     f.write(str(streams).replace(', ',',\n').replace('[', '\n').replace(']', '\n'))
     f.close()
 streams = []
-[streams.append(line) for line in open('temp.txt') if 'Stream' in line]
+[streams.append(line) for line in open('temp') if 'Stream' in line]
 print("\n".join(streams))
 itag = input("Enter itag number of stream to download: ")
 stream = yt.streams.get_by_itag(itag)
 prog = []
-[prog.append(line) for line in open('temp.txt') if str(itag) in line]
+[prog.append(line) for line in open('temp') if str(itag) in line]
 prog = ''.join(prog).split(' ')
 acodec = [i for i, s in enumerate(prog) if 'acodec' in s]
 vcodec = [i for i, s in enumerate(prog) if 'vcodec' in s]
@@ -67,7 +66,7 @@ if vcodec:
 elif acodec:
     print("\nDownloading Audio")
     stream.download(output_path="Downloads")
-os.remove('temp.txt')
+os.remove('temp')
 try:
     shutil.rmtree('temp')
 except:
