@@ -40,8 +40,10 @@ if vcodec:
         if aitag != "":
             audio = yt.streams.get_by_itag(aitag)
             print("Downloading Audio")
+            os.mkdir("temp/audio")
             audio.download(output_path="temp/audio")
             print("\nDownloading Video")
+            os.mkdir("temp/video")
             stream.download(output_path="temp/video")
             print("\nMerging Audio and Video\n(This may take a while)")
             for file in os.listdir("temp/video"):
