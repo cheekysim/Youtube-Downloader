@@ -2,6 +2,6 @@ import PyInstaller.__main__
 
 PyInstaller.__main__.run([
     'main.py',
-    '--onefile',
+    '--add-data=ffmpeg.exe;.',
     '--name=Youtube Video Downloader'
 ])

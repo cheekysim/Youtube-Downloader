@@ -1,8 +1,18 @@
 from pytube import YouTube
 from pytube.cli import on_progress
-import ffmpeg
 import shutil
+import ffmpeg
 import os
+import sys
+import inspect
+
+def show_exception_and_exit(exc_type, exc_value, tb):
+    import traceback
+    traceback.print_exception(exc_type, exc_value, tb)
+    input("Press key to exit.")
+    sys.exit(-1)
+
+sys.excepthook = show_exception_and_exit
 
 link = str(input("Video Link: "))
 yt = YouTube(link, on_progress_callback=on_progress)
@@ -45,6 +55,10 @@ if vcodec:
                     audio = ffmpeg.input(f"./temp/audio/{ytname}.mp4")
                 elif file.endswith(".webm"):
                     audio = ffmpeg.input(f"./temp/audio/{ytname}.webm")
+            try:
+                os.mkdir("Downloads")
+            except:
+                pass
             ffmpeg.concat(video, audio, v=1, a=1).output(f"./Downloads/{ytname}.mp4").run()
             print("Done")
         else:
@@ -54,5 +68,8 @@ elif acodec:
     print("\nDownloading Audio")
     stream.download(output_path="Downloads")
 os.remove('temp.txt')
-shutil.rmtree('temp')
+try:
+    shutil.rmtree('temp')
+except:
+    pass
 stream.on_complete(print("\nDownload Successful"))
