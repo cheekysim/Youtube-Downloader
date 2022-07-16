@@ -5,3 +5,5 @@
 temp/
 build/
 dist/
+Downloads/
+package.py
