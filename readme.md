@@ -1,4 +1,4 @@
-# Ico Converter
+# Youtube Downloader
 
 A simple tool to download youtube videos / audio.
 
