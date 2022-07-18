@@ -15,7 +15,7 @@ sys.excepthook = show_exception_and_exit
 
 link = str(input("Video Link: "))
 yt = YouTube(link, on_progress_callback=on_progress)
-ytname=yt.title
+ytname=yt.title.replace('.', '')
 streams = str(yt.streams)
 with open("streams.tmp", "w") as f:
     f.write(str(streams).replace(', ',',\n').replace('[', '\n').replace(']', '\n'))
@@ -39,10 +39,10 @@ if vcodec:
         aitag = input("Enter itag number of stream or leave blank for no audio: ")
         if aitag != "":
             audio = yt.streams.get_by_itag(aitag)
-            print("Downloading Audio")
-            audio.download(output_path="temp/audio")
-            print("\nDownloading Video")
+            print("Downloading Video")
             stream.download(output_path="temp/video")
+            print("\nDownloading Audio")
+            audio.download(output_path="temp/audio")
             print("\nMerging Audio and Video\n(This may take a while)")
             for file in os.listdir("temp/video"):
                 if file.endswith(".mp4"): 
