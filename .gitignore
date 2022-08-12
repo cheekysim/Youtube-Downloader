@@ -6,4 +6,5 @@ temp/
 build/
 dist/
 Downloads/
-package.py
+/package.py
+/.venv
